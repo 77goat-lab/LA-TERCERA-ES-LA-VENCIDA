@@ -1,0 +1,25 @@
+<script>
+    const form = document.getElementById('appointmentForm');
+    form.addEventListener('submit', function(event) {
+        event.preventDefault();
+        const formData = new FormData(form);
+        const data = new URLSearchParams();
+        for (const pair of formData.entries()) {
+            data.append(pair[0], pair[1]);
+        }
+        fetch('https://script.google.com/macros/s/AKfycbxHbrhTGIgK92nQf8mYK7WmAjlGM57vbyUweuGQHoF5oFRjY4Cfn6x4rqNHl0TDsMeQ/exec', {
+            method: 'POST',
+            body: data
+        })
+        .then(response => response.text())
+        .then(() => {
+            document.getElementById('confirmationMessage').style.display = 'block';
+            setTimeout(() => {
+                document.getElementById('confirmationMessage').style.display = 'none';
+                form.reset();
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+            }, 5000);
+        })
+        .catch(() => alert('Hubo un error al enviar la cita.'));
+    });
+</script>
